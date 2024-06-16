@@ -23,7 +23,7 @@ public interface Sourced {
    *
    * @throws IncompatibleSourceException if the source is not compatible with this object
    */
-  void addSource(DataSource source) throws IncompatibleSourceException;
+  void addSource(DataSource<?> source);
 
   /**
    * Gets an observable list of the sources for this object.

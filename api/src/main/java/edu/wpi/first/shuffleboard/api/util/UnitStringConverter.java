@@ -23,7 +23,7 @@ public class UnitStringConverter extends StringConverter<Number> {
 
   @Override
   public String toString(Number number) {
-    if ((double) number.longValue() == number.doubleValue()) {
+    if (number.longValue() == number.doubleValue()) {
       // It's an integer value, don't show decimal point
       return String.format("%d %s", number.longValue(), unit);
     }

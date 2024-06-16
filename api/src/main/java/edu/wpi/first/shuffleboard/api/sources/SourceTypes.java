@@ -20,7 +20,7 @@ import javafx.collections.ObservableList;
 public final class SourceTypes extends Registry<SourceType> {
 
   // TODO replace with DI eg Guice
-  private static SourceTypes defaultInstance = null;
+  private static SourceTypes defaultInstance;
 
   private final Map<String, SourceType> types = new HashMap<>();
   private final ObservableList<String> typeNames = FXCollections.observableArrayList();

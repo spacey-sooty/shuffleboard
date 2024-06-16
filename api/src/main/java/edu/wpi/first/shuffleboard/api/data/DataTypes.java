@@ -40,7 +40,7 @@ import static java.util.Objects.requireNonNull;
 public class DataTypes extends Registry<DataType> {
 
   // TODO replace with DI eg Guice
-  private static DataTypes defaultInstance = null;
+  private static DataTypes defaultInstance;
 
   // Catchall or wildcard types
   /**
@@ -118,7 +118,7 @@ public class DataTypes extends Registry<DataType> {
       ByteArray
   );
 
-  private final Map<String, DataType> dataTypes = new TreeMap<>();
+  private final Map<String, DataType> storedDataTypes = new TreeMap<>();
 
   private final Map<Class, Optional<DataType>> typeCache = new HashMap<>();
 
@@ -164,7 +164,7 @@ public class DataTypes extends Registry<DataType> {
     if (isRegistered(dataType)) {
       throw new IllegalArgumentException("Data type " + dataType + " has already been registered");
     }
-    dataTypes.put(dataType.getName(), dataType);
+    storedDataTypes.put(dataType.getName(), dataType);
     typeCache.put(dataType.getJavaClass(), Optional.of(dataType));
     addItem(dataType);
   }
@@ -175,7 +175,7 @@ public class DataTypes extends Registry<DataType> {
     if (defaultTypes.contains(dataType)) {
       throw new IllegalArgumentException("A default data type cannot be unregistered: '" + dataType + "'");
     }
-    dataTypes.remove(dataType.getName());
+    storedDataTypes.remove(dataType.getName());
     typeCache.remove(dataType.getJavaClass());
     removeItem(dataType);
   }
@@ -184,7 +184,7 @@ public class DataTypes extends Registry<DataType> {
    * Gets the data type with the given name.
    */
   public Optional<DataType> forName(String name) {
-    return Optional.ofNullable(dataTypes.get(name));
+    return Optional.ofNullable(storedDataTypes.get(name));
   }
 
   /**
@@ -199,7 +199,7 @@ public class DataTypes extends Registry<DataType> {
       if (DataType.class.isAssignableFrom(type)) {
         return forType((Class<DataType>) type);
       }
-      Optional<DataType> naive = dataTypes.values().stream()
+      Optional<DataType> naive = storedDataTypes.values().stream()
           .filter(t -> type.equals(t.getJavaClass()))
           .findAny();
       if (naive.isPresent()) {
@@ -208,8 +208,8 @@ public class DataTypes extends Registry<DataType> {
         // Check Java class hierarchy
         Comparator<Class<?>> classComparator = closestTo(type);
         // This stream MUST be sequential to work correctly
-        return dataTypes.values().stream()
-            .filter(t -> t != All)
+        return storedDataTypes.values().stream()
+            .filter(t -> !t.equals(All))
             .sorted((t1, t2) -> classComparator.reversed().compare(t1.getJavaClass(), t2.getJavaClass()))
             .findFirst();
       }
@@ -310,7 +310,7 @@ public class DataTypes extends Registry<DataType> {
    */
   @SuppressWarnings("unchecked")
   public <D extends DataType> Optional<D> forType(Class<D> clazz) {
-    return (Optional<D>) dataTypes.values()
+    return (Optional<D>) storedDataTypes.values()
         .stream()
         .filter(d -> d.getClass() == clazz)
         .findFirst();

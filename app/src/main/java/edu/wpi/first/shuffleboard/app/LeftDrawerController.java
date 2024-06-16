@@ -147,7 +147,7 @@ public final class LeftDrawerController {
         searchField.setPromptText("Search for data sources");
         tree.getFilterableRoot().predicateProperty().bind(EasyBind.monadic(searchField.textProperty()).map(text -> {
           if (text.isEmpty()) {
-            return TreeItemPredicate.always();
+            return TreeItemPredicate.ALWAYS;
           } else {
             return (parent, entry) -> StringUtils.containsIgnoreCase(entry.getViewName(), text)
                 || StringUtils.containsIgnoreCase(entry.getName(), text)

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Debouncer implements Runnable {
 
-  private ScheduledFuture<?> future = null;
+  private ScheduledFuture<?> future;
   private final ScheduledExecutorService executorService;
 
   private final Runnable target;

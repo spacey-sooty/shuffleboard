@@ -46,7 +46,7 @@ public class CameraServerPlugin extends Plugin {
   private static final PropertyParser<Rotation> CAMERA_ROTATION = PropertyParser.forEnum(Rotation.class);
 
   @Override
-  public void onLoad() throws Exception {
+  public void onLoad() throws IOException {
     CameraServerJNI.Helper.setExtractOnStaticLoad(false);
     try {
       // Make sure the JNI is loaded. If it's not, this plugin can't work!

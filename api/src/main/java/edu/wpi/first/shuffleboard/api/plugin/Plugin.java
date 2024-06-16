@@ -156,6 +156,7 @@ public class Plugin {
    * Called when a plugin is loaded. Defaults to do nothing; plugins that require logic to be performed when they're
    * loaded (for example, connecting to a server) should be run here.
    */
+  @SuppressWarnings("PMD.SignatureDeclareThrowsException")
   public void onLoad() throws Exception {
     // Default to NOP
   }

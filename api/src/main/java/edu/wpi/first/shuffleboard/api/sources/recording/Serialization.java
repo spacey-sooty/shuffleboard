@@ -4,9 +4,13 @@ import edu.wpi.first.shuffleboard.api.data.DataType;
 import edu.wpi.first.shuffleboard.api.data.DataTypes;
 import edu.wpi.first.shuffleboard.api.data.types.StringArrayType;
 import edu.wpi.first.shuffleboard.api.data.types.StringType;
+import edu.wpi.first.shuffleboard.api.sources.recording.Recording.Snapshot;
 import edu.wpi.first.shuffleboard.api.sources.recording.serialization.Serializers;
 import edu.wpi.first.shuffleboard.api.sources.recording.serialization.TypeAdapter;
+import eu.hansolo.medusa.tools.Data;
+import javafx.stage.FileChooser;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Bytes;
 
@@ -14,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -142,15 +147,15 @@ public final class Serialization {
   public static void saveRecording(Recording recording, Path file) throws IOException {
     Serializers.getAdapters().forEach(a -> a.setCurrentFile(file.toFile()));
     // Work on a copy, since the recording can have new data added to it while we're in the middle of saving
-    var snapshot = recording.takeSnapshotAndClear();
-    final var dataCopy = snapshot.getData()
+    Snapshot snapshot = recording.takeSnapshotAndClear();
+    final ImmutableCollection<TimestampedData> dataCopy = snapshot.getData()
         .stream()
         .sorted()
         .collect(ImmutableList.toImmutableList());
-    final var markers = snapshot.getMarkers();
-    final byte[] header = header(dataCopy);
+    final ImmutableCollection<Marker> markers = snapshot.getMarkers();
+    final byte[] header = header((List<TimestampedData>)dataCopy);
     put(header, toByteArray(0), Offsets.DATA_POSITION_OFFSET);
-    final List<String> constantPool = generateConstantPool(dataCopy);
+    final List<String> constantPool = generateConstantPool((List<TimestampedData>)dataCopy);
     List<byte[]> segments = new ArrayList<>();
     segments.add(header);
 
@@ -207,9 +212,9 @@ public final class Serialization {
       return;
     }
     // Use a copy to avoid synchronization issues
-    var snapshot = recording.takeSnapshotAndClear();
-    final var dataCopy = snapshot.getData();
-    final var markers = snapshot.getMarkers();
+    Snapshot snapshot = recording.takeSnapshotAndClear();
+    final ImmutableCollection<TimestampedData> dataCopy = snapshot.getData();
+    final ImmutableCollection<Marker> markers = snapshot.getMarkers();
     if (dataCopy.isEmpty() && markers.isEmpty()) {
       // No new data
       return;
@@ -354,10 +359,10 @@ public final class Serialization {
       throw new AssertionError("File name is null - this should have been checked earlier");
     }
     File tmpFile = new File(path.toString().replace(fileName.toString(), "." + fileName));
-    try (var file = new RandomAccessFile(path.toFile(), "rw");
-         var tmp = new RandomAccessFile(tmpFile, "rw");
-         var src = file.getChannel();
-         var dst = tmp.getChannel()) {
+    try (RandomAccessFile file = new RandomAccessFile(path.toFile(), "rw");
+         RandomAccessFile tmp = new RandomAccessFile(tmpFile, "rw");
+         FileChannel src = file.getChannel();
+         FileChannel dst = tmp.getChannel()) {
       final long fileSize = file.length();
       final long count = fileSize - pos;
       src.transferTo(pos, count, dst);
@@ -493,7 +498,7 @@ public final class Serialization {
    */
   public static byte[] header(List<TimestampedData> data) {
     List<String> strings = generateConstantPool(data);
-    byte[] constantPool = toByteArray(strings.toArray(new String[strings.size()]));
+    byte[] constantPool = toByteArray(strings.toArray(new String[0]));
     byte[] header = new byte[(SIZE_OF_INT * 5) + constantPool.length];
     put(header, toByteArray(MAGIC_NUMBER), Offsets.MAGIC_NUMBER_OFFSET);
     put(header, toByteArray(VERSION), Offsets.VERSION_NUMBER_OFFSET);
@@ -714,13 +719,13 @@ public final class Serialization {
           "Not enough bytes to read from. Starting position = " + pos + ", array length = " + array.length);
     }
     return ((long) (array[pos] & 0xFF) << 56)
-        | ((long) (array[pos + 1] & 0xFF) << 48)
-        | ((long) (array[pos + 2] & 0xFF) << 40)
-        | ((long) (array[pos + 3] & 0xFF) << 32)
-        | ((long) (array[pos + 4] & 0xFF) << 24)
-        | ((long) (array[pos + 5] & 0xFF) << 16)
-        | ((long) (array[pos + 6] & 0xFF) << 8)
-        | (long) (array[pos + 7] & 0xFF);
+        | (array[pos + 1] & 0xFF) << 48
+        | (array[pos + 2] & 0xFF) << 40
+        | (array[pos + 3] & 0xFF) << 32
+        | (array[pos + 4] & 0xFF) << 24
+        | (array[pos + 5] & 0xFF) << 16
+        | (array[pos + 6] & 0xFF) << 8
+        | array[pos + 7] & 0xFF;
   }
 
   /**

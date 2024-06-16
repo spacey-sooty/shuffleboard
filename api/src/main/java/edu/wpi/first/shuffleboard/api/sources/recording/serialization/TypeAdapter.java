@@ -12,7 +12,7 @@ import java.io.File;
 public abstract class TypeAdapter<T> implements Serializer<T>, Deserializer<T> {
 
   private final DataType<T> dataType;
-  private File currentFile = null;
+  private File currentFile;
 
   /**
    * Creates a new adapter for the given data type.

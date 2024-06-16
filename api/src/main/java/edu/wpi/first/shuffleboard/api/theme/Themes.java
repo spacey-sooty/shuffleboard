@@ -106,7 +106,9 @@ public final class Themes extends Registry<Theme> {
     try {
       return Optional.of(new Theme(dir.getFileName().toString(), getStyleSheetsInPath(dir)));
     } catch (IOException e) {
-      log.log(Level.WARNING, "Themes could not be loaded from directory: " + dir.toAbsolutePath(), e);
+      if (log.isLoggable(Level.WARNING)) {
+        log.log(Level.WARNING, "Themes could not be loaded from directory: " + dir.toAbsolutePath(), e);
+      }
       return Optional.empty();
     }
   }
@@ -129,7 +131,9 @@ public final class Themes extends Registry<Theme> {
     try {
       return Optional.of(path.toUri().toURL().toExternalForm());
     } catch (MalformedURLException e) {
-      log.log(Level.WARNING, "Could not get external form of " + path, e);
+      if (log.isLoggable(Level.WARNING)) {
+        log.log(Level.WARNING, "Could not get external form of " + path, e);
+      }
       return Optional.empty();
     }
   }

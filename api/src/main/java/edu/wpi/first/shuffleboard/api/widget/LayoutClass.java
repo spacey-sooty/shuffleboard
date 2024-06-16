@@ -9,11 +9,11 @@ import java.util.logging.Logger;
 public class LayoutClass<T extends Layout> implements LayoutType {
 
   private final String name;
-  private final Class<T> layoutClass;
+  private final Class<T> storedLayoutClass;
 
   public LayoutClass(String name, Class<T> layout) {
     this.name = name;
-    this.layoutClass = layout;
+    this.storedLayoutClass = layout;
   }
 
   @Override
@@ -23,9 +23,9 @@ public class LayoutClass<T extends Layout> implements LayoutType {
 
   @Override
   public Layout get() {
-    return Components.viewFor(layoutClass).orElseGet(() -> {
+    return Components.viewFor(storedLayoutClass).orElseGet(() -> {
       try {
-        return layoutClass.newInstance();
+        return storedLayoutClass.newInstance();
       } catch (InstantiationException | IllegalAccessException e) {
         Logger.getLogger("LayoutClass").log(Level.WARNING, "error creating widget", e);
         return null;
@@ -35,7 +35,6 @@ public class LayoutClass<T extends Layout> implements LayoutType {
 
   @Override
   public Class<T> getType() {
-    return layoutClass;
+    return storedLayoutClass;
   }
-
 }

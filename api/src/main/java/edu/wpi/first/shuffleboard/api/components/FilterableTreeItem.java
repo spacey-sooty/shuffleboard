@@ -28,7 +28,7 @@ public class FilterableTreeItem<T extends SourceEntry> extends TreeItem<T> {
 
   private final Predicate<TreeItem<T>> always = item -> {
     if (item instanceof FilterableTreeItem) {
-      ((FilterableTreeItem<T>) item).setPredicate(TreeItemPredicate.always());
+      ((FilterableTreeItem<T>) item).setPredicate(TreeItemPredicate.ALWAYS);
     }
     return true;
   };
@@ -38,7 +38,7 @@ public class FilterableTreeItem<T extends SourceEntry> extends TreeItem<T> {
   private final FilteredList<TreeItem<T>> filteredList = new FilteredList<>(sourceList);
   private final SortedList<TreeItem<T>> sortedList = new SortedList<>(filteredList, comparator);
 
-  private final ObjectProperty<TreeItemPredicate<T>> predicate = new SimpleObjectProperty<>(TreeItemPredicate.always());
+  private final ObjectProperty<TreeItemPredicate<T>> predicate = new SimpleObjectProperty<>(TreeItemPredicate.ALWAYS);
 
   @SuppressWarnings("JavadocMethod")
   public FilterableTreeItem(T value) {
@@ -53,6 +53,7 @@ public class FilterableTreeItem<T extends SourceEntry> extends TreeItem<T> {
     setHiddenFieldChildren(sortedList);
   }
 
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
   protected void setHiddenFieldChildren(ObservableList<TreeItem<T>> list) {
     try {
       Field children = TreeItem.class.getDeclaredField("children");
@@ -102,13 +103,7 @@ public class FilterableTreeItem<T extends SourceEntry> extends TreeItem<T> {
       if (child instanceof FilterableTreeItem) {
         ((FilterableTreeItem<T>) child).setPredicate(predicate);
       }
-      if (predicate == null) {
-        return true;
-      }
-      if (!child.getChildren().isEmpty()) {
-        return true;
-      }
-      return predicate.test(child.getParent(), child.getValue());
+      return !child.getChildren().isEmpty() && predicate.test(child.getParent(), child.getValue()) && predicate == null;
     };
   }
 }

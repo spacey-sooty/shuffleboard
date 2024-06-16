@@ -2,6 +2,7 @@ package edu.wpi.first.shuffleboard.api.sources.recording;
 
 import edu.wpi.first.shuffleboard.api.util.concurrent.FunctionalReadWriteLock;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class Recording {
   // This should only be used by the Serialization class in the same package
   Snapshot takeSnapshotAndClear() {
     return lock.writing(() -> {
-      var snapshot = Snapshot.of(this);
+      Snapshot snapshot = Snapshot.of(this);
       data.clear();
       markers.clear();
       return snapshot;
@@ -173,5 +174,4 @@ public class Recording {
       return markers;
     }
   }
-
 }

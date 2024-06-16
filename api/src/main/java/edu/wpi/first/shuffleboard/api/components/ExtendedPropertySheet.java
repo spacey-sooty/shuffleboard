@@ -285,7 +285,7 @@ public class ExtendedPropertySheet extends PropertySheet {
 
   private static class ThemePropertyEditor extends AbstractPropertyEditor<Theme, ComboBox<Theme>> {
 
-    private static class ThemeStringConverter extends StringConverter<Theme> {
+    private static final class ThemeStringConverter extends StringConverter<Theme> {
 
       @Override
       public String toString(Theme object) {
@@ -354,7 +354,7 @@ public class ExtendedPropertySheet extends PropertySheet {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("PMD.UnnecessaryCastRule")
     public void setValue(Object value) {
       ((Setting) setting).setValue(value);
     }

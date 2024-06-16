@@ -40,9 +40,9 @@ public class Components extends Registry<ComponentType> {
   // TODO replace with DI eg Guice
   private static Components defaultInstance = new Components();
 
-  private final Map<String, ComponentType<?>> components = new TreeMap<>();
+  private final Map<String, ComponentType<?>> storedComponents = new TreeMap<>();
   private final Map<DataType, ComponentType<?>> defaultComponents = new HashMap<>();
-  private final WeakHashMap<Widget, Widget> activeWidgets = new WeakHashMap<>();
+  private final Map<Widget, Widget> activeWidgets = new WeakHashMap<>();
   private final Map<Component, UUID> allActiveComponents = new WeakHashMap<>();
 
   /**
@@ -65,10 +65,10 @@ public class Components extends Registry<ComponentType> {
 
   @Override
   public void register(ComponentType type) {
-    if (components.containsKey(type.getName())) {
+    if (storedComponents.containsKey(type.getName())) {
       throw new IllegalArgumentException("Component class " + type.getClass().getName() + " is already registered");
     }
-    components.put(type.getName(), type);
+    storedComponents.put(type.getName(), type);
     addItem(type);
   }
 
@@ -104,7 +104,7 @@ public class Components extends Registry<ComponentType> {
 
   @Override
   public void unregister(ComponentType type) {
-    components.remove(type.getName());
+    storedComponents.remove(type.getName());
     List<DataType> defaultComponentsToRemove = defaultComponents.entrySet().stream()
         .filter(e -> e.getValue().getName().equals(type.getName()))
         .map(Map.Entry::getKey)
@@ -114,7 +114,7 @@ public class Components extends Registry<ComponentType> {
   }
 
   public Stream<ComponentType<?>> allComponents() {
-    return components.values().stream();
+    return storedComponents.values().stream();
   }
 
   public Stream<WidgetType> allWidgets() {
@@ -149,7 +149,7 @@ public class Components extends Registry<ComponentType> {
    *
    * @throws IncompatibleSourceException if the widget for the given name is incompatible with any of the given sources
    */
-  public Optional<Widget> createWidget(String name, Collection<DataSource> sources) throws IncompatibleSourceException {
+  public Optional<Widget> createWidget(String name, Collection<DataSource> sources) {
     Optional<Widget> widget = createWidget(name);
     widget.ifPresent(w -> sources.forEach(w::addSource));
     widget.ifPresent(this::setId);
@@ -270,7 +270,7 @@ public class Components extends Registry<ComponentType> {
    * @return a ComponentType to create widgets of the same class
    */
   private Optional<ComponentType<?>> typeFor(String name) {
-    return Optional.ofNullable(components.get(name));
+    return Optional.ofNullable(storedComponents.get(name));
   }
 
   private Set<ComponentType<?>> getComponentsForType(DataType type) {
@@ -349,7 +349,7 @@ public class Components extends Registry<ComponentType> {
     if (controller != null) { //NOPMD readability
       try {
         FXMLLoader loader = new FXMLLoader(annotatedClass.getResource(controller.value()));
-        loader.setClassLoader(annotatedClass.getClassLoader());
+        loader.setClassLoader(Thread.currentThread().getContextClassLoader());
         loader.load();
         return Optional.of(loader.getController());
       } catch (IOException e) {

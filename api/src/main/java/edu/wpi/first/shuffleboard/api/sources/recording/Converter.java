@@ -100,11 +100,9 @@ public interface Converter {
 
     final Map<Long, List<RecordingEntry>> map = new HashMap<>();
 
-    for (int i = 0; i < data.size(); ) {
+    for (int i = 0; i < data.size(); i++) {
       RecordingEntry point = data.get(i);
       if (point instanceof TimestampedData && !filter.test((TimestampedData) point)) {
-        // Skip
-        i++;
         continue;
       }
 
@@ -116,7 +114,7 @@ public interface Converter {
       // for multiple recorded data points that were updated at the same time, but network latencies
       // or CPU usage caused the timestamps to be slightly different
       for (; j < data.size() && data.get(j).getTimestamp() <= point.getTimestamp() + window; j++) {
-        var e = data.get(j);
+        RecordingEntry e = data.get(j);
         if (e instanceof TimestampedData && !filter.test((TimestampedData) e)) {
           continue;
         }
@@ -127,7 +125,6 @@ public interface Converter {
       elements.sort(markersFirst);
 
       map.put(point.getTimestamp(), elements);
-      i = j;
     }
     return map;
   }
@@ -141,7 +138,7 @@ public interface Converter {
    */
   static boolean isMetadata(RecordingEntry entry) {
     if (entry instanceof TimestampedData) {
-      var data = (TimestampedData) entry;
+      TimestampedData data = (TimestampedData) entry;
       return DataSourceUtils.isMetadata(data.getSourceId());
     }
     return false;

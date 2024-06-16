@@ -20,7 +20,7 @@ public interface SingleTypeWidget<T> extends Widget {
   }
 
   default DataType<T> getDataType() {
-    return getDataTypes().toArray(new DataType[1])[0];
+    return getDataTypes().toArray(new DataType[0])[0];
   }
 
   /**

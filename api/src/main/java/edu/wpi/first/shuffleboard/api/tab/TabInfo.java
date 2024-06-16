@@ -76,13 +76,13 @@ public final class TabInfo {
   public static final class TabInfoBuilder {
 
     private String name;
-    private boolean autoPopulate = false;
+    private boolean shouldAutoPopulate;
     private String sourcePrefix = "";
 
     /**
      * Sets the name of the built tab.
      */
-    public TabInfoBuilder name(String name) {
+    public TabInfoBuilder setName(String name) {
       this.name = Objects.requireNonNull(name, "name");
       return this;
     }
@@ -91,14 +91,14 @@ public final class TabInfo {
      * Sets the built tab to autopopulate. Autopopulation is {@code false} by default; use this method to enable it.
      */
     public TabInfoBuilder autoPopulate() {
-      this.autoPopulate = true;
+      this.shouldAutoPopulate = true;
       return this;
     }
 
     /**
      * Sets the source prefix the built tab should use during autopopulation.
      */
-    public TabInfoBuilder sourcePrefix(String sourcePrefix) {
+    public TabInfoBuilder setSourcePrefix(String sourcePrefix) {
       this.sourcePrefix = Objects.requireNonNull(sourcePrefix, "sourcePrefix");
       return this;
     }
@@ -113,10 +113,10 @@ public final class TabInfo {
       if (name == null) {
         throw new IllegalStateException("Tab name was not set");
       }
-      if (autoPopulate && sourcePrefix.isEmpty()) {
+      if (shouldAutoPopulate && sourcePrefix.isEmpty()) {
         throw new IllegalStateException("A tab cannot autopopulate with no source prefix set");
       }
-      return new TabInfo(name, autoPopulate, sourcePrefix);
+      return new TabInfo(name, shouldAutoPopulate, sourcePrefix);
     }
 
   }

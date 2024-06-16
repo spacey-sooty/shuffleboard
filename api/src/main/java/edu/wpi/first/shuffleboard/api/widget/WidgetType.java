@@ -19,9 +19,10 @@ public interface WidgetType<W extends Widget> extends ComponentType<W> {
    *
    * @param widgetClass the widget class
    */
+  @SuppressWarnings("PMD.AvoidCatchingGenericException")
   static <T extends Widget> WidgetType<T> forAnnotatedWidget(Class<T> widgetClass) {
     Components.validateAnnotatedComponentClass(widgetClass);
-    return new AbstractWidgetType<T>(widgetClass.getAnnotation(Description.class)) {
+    return new AbstractWidgetType<>(widgetClass.getAnnotation(Description.class)) {
       @Override
       public T get() {
         return Components.viewFor(widgetClass).orElseGet(() -> {

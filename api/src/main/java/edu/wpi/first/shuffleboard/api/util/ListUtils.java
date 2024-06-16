@@ -1,5 +1,6 @@
 package edu.wpi.first.shuffleboard.api.util;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -55,10 +56,7 @@ public final class ListUtils {
    * @return true if the element was added to the list, false if not
    */
   public static <T> boolean addIfNotPresent(List<? super T> list, T element) {
-    if (!list.contains(element)) {
-      return list.add(element);
-    }
-    return false;
+    return !list.contains(element) && list.add(element);
   }
 
   /**

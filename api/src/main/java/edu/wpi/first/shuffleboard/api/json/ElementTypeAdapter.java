@@ -3,7 +3,6 @@ package edu.wpi.first.shuffleboard.api.json;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -23,10 +22,10 @@ public interface ElementTypeAdapter<T> extends JsonSerializer<T>, JsonDeserializ
     return serialize(src, context);
   }
 
-  T deserialize(JsonElement json, JsonDeserializationContext context) throws JsonParseException;
+  T deserialize(JsonElement json, JsonDeserializationContext context);
 
   @Override
-  default T deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+  default T deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
     return deserialize(json, context);
   }
 }

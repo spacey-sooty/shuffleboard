@@ -158,7 +158,7 @@ public class PluginLoader {
     PrivilegedAction<URLClassLoader> getClassLoader = () -> {
       return new URLClassLoader(new URL[]{url}, ClassLoader.getSystemClassLoader());
     };
-    URLClassLoader classLoader = AccessController.doPrivileged(getClassLoader);
+    URLClassLoader classLoader = getClassLoader.run();
     try (JarFile jarFile = new JarFile(new File(jarUri))) {
       List<? extends Class<? extends Plugin>> pluginClasses = jarFile.stream()
           .filter(e -> e.getName().endsWith(".class"))

@@ -71,7 +71,7 @@ public final class Maps {
    * @throws NoSuchElementException if the key is not in the map
    * @throws ClassCastException     if the value is present, but is not an instance of {@code T}
    */
-  public static <K, T> T get(Map<? super K, ?> map, K key) throws NoSuchElementException {
+  public static <K, T> T get(Map<? super K, ?> map, K key) {
     if (map.containsKey(key)) {
       return (T) map.get(key);
     } else {
@@ -109,7 +109,7 @@ public final class Maps {
    */
   public static final class MapBuilder<K, V> {
 
-    private boolean completed = false;
+    private boolean completed;
     private final Map<K, V> built = new HashMap<>();
 
     /**

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public final class ShutdownHooks {
 
   private static final Queue<Hook> hooks = new ConcurrentLinkedQueue<>();
-  private static volatile boolean runningHooks = false;
+  private static volatile boolean runningHooks;
 
   private ShutdownHooks() {
     throw new UnsupportedOperationException("This is a utility class");
@@ -23,7 +23,7 @@ public final class ShutdownHooks {
 
   @FunctionalInterface
   public interface Hook {
-    void run() throws Exception;
+    void run();
   }
 
   /**
@@ -53,11 +53,7 @@ public final class ShutdownHooks {
   public static void runAllHooks() {
     runningHooks = true;
     for (Hook hook : hooks) {
-      try {
-        hook.run();
-      } catch (Exception e) {
-        Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-      }
+      hook.run();
     }
   }
 

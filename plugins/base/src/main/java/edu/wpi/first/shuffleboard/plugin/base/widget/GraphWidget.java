@@ -358,7 +358,7 @@ public class GraphWidget extends AbstractWidget implements AnnotatedWidget {
         numberChangeListener.changed(source.dataProperty(), null, source.getData());
       }
 
-      for (var source : arraySeriesMap.keySet()) {
+      for (DataSource<double[]> source : arraySeriesMap.keySet()) {
         numberArrayChangeListener.changed(source.dataProperty(), null, source.getData());
       }
 
@@ -369,7 +369,7 @@ public class GraphWidget extends AbstractWidget implements AnnotatedWidget {
   private void rerenderGraph() {
     OptionalDouble globalMax = OptionalDouble.empty();
     for (DataSet s : chart.getDatasets()) {
-      var doubleDataSet = (DoubleDataSet) s;
+      DoubleDataSet doubleDataSet = (DoubleDataSet) s;
 
       OptionalDouble dataSetMax = doubleDataSet.lock().readLockGuard(() -> {
 
@@ -407,7 +407,7 @@ public class GraphWidget extends AbstractWidget implements AnnotatedWidget {
   }
 
   @Override
-  public void addSource(DataSource source) throws IncompatibleSourceException {
+  public void addSource(DataSource source) {
     if (sources.contains(source)) {
       // Already have it, don't graph it twice
       return;

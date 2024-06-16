@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
 
 /**
@@ -50,7 +51,7 @@ public final class PropertySaver {
     // Save settings
     for (Group group : object.getSettings()) {
       for (Setting<?> setting : group.getSettings()) {
-        var property = setting.getProperty();
+        ReadOnlyProperty<?> property = setting.getProperty();
         if (!savedProperties.contains(property)) {
           Class<?> type = setting.getType() == null ? setting.getProperty().getClass() : setting.getType();
           serializeProperty(context, jsonObject, property, type,group.getName() + "/" + setting.getName());
@@ -128,11 +129,11 @@ public final class PropertySaver {
     // Load settings
     for (Group group : object.getSettings()) {
       for (Setting setting : group.getSettings()) {
-        var property = setting.getProperty();
+        ReadOnlyProperty<?> property = setting.getProperty();
         if (savedProperties.contains(property)) {
           continue;
         }
-        var type = setting.getType() == null ? property.getValue().getClass() : setting.getType();
+        Class<?> type = setting.getType() == null ? property.getValue().getClass() : setting.getType();
         type = TypeUtils.primitiveForBoxedType(type);
         Object deserialized = context.deserialize(
             jsonObject.get(group.getName() + "/" + setting.getName()), type);
@@ -272,6 +273,7 @@ public final class PropertySaver {
    * Gets a stream of the fields in the object's class hierarchy annotated with
    * {@link SaveThisProperty @SaveThisProperty}.
    */
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
   public static Stream<Field> getPropertyFields(Class<?> clazz) {
     if (clazz == null) {
       return Stream.empty();

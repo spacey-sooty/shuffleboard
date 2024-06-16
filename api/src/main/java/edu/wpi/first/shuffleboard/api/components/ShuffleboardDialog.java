@@ -20,7 +20,6 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
@@ -58,7 +57,7 @@ public class ShuffleboardDialog extends Dialog<ButtonType> {
    *
    * @throws IllegalArgumentException if the FXML could not be loaded
    */
-  public static ShuffleboardDialog createForFxml(URL fxmlLocation) throws IllegalArgumentException {
+  public static ShuffleboardDialog createForFxml(URL fxmlLocation) {
     try {
       return new ShuffleboardDialog(FXMLLoader.load(fxmlLocation));
     } catch (IOException e) {
@@ -143,7 +142,7 @@ public class ShuffleboardDialog extends Dialog<ButtonType> {
     private final Label subtitle = new Label();
 
     private final ChangeListener<String> removeIfNullText = (property, oldText, newText) -> {
-      Node bean = (Node) ((Property) property).getBean();
+      Node bean = (Node) ((Property<?>) property).getBean();
       if (newText == null) {
         getChildren().remove(bean);
       } else {
@@ -152,7 +151,7 @@ public class ShuffleboardDialog extends Dialog<ButtonType> {
     };
 
     public Header() {
-      setMaxWidth(Region.USE_COMPUTED_SIZE);
+      setMaxWidth(USE_COMPUTED_SIZE);
       title.textProperty().addListener(removeIfNullText);
       subtitle.textProperty().addListener(removeIfNullText);
 

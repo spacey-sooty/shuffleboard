@@ -35,7 +35,7 @@ public final class OsDetector {
    *
    * @throws IllegalStateException if the operating system is not Linux-based
    */
-  public static String getLinuxDistribution() throws IllegalStateException {
+  public static String getLinuxDistribution() {
     if (!isLinux()) {
       throw new IllegalStateException(
           "Not running on a Linux-based operating system! OS is " + getOperatingSystemType());

@@ -39,7 +39,7 @@ public class MockPreferences extends AbstractPreferences {
 
   @Override
   protected String[] keysSpi() throws BackingStoreException {
-    return map.keySet().toArray(new String[map.keySet().size()]);
+    return map.keySet().toArray(new String[0]);
   }
 
   @Override

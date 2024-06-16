@@ -213,7 +213,7 @@ allprojects {
     }
 
     pmd {
-        toolVersion = "6.7.0"
+        toolVersion = "7.2.0"
         consoleOutput = true
         sourceSets = [project.sourceSets["main"]]
         reportsDir = file("${project.buildDir}/reports/pmd")

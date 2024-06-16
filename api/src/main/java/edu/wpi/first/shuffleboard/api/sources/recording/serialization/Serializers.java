@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public final class Serializers {
 
-  private static final Map<DataType, TypeAdapter> serializers = new HashMap<>();
+  private static final Map<DataType, TypeAdapter> storedSerializers = new HashMap<>();
 
   static {
     add(new SimpleAdapter<>(DataTypes.Number,
@@ -39,7 +39,7 @@ public final class Serializers {
    */
   public static void add(TypeAdapter<?> typeAdapter) {
     Objects.requireNonNull(typeAdapter, "typeAdapter");
-    serializers.put(typeAdapter.getDataType(), typeAdapter);
+    storedSerializers.put(typeAdapter.getDataType(), typeAdapter);
   }
 
   /**
@@ -48,7 +48,7 @@ public final class Serializers {
    * @param typeAdapter the type adapter to remove
    */
   public static void remove(TypeAdapter typeAdapter) {
-    serializers.remove(typeAdapter.getDataType());
+    storedSerializers.remove(typeAdapter.getDataType());
     typeAdapter.cleanUp();
   }
 
@@ -59,14 +59,14 @@ public final class Serializers {
    */
   @SuppressWarnings("unchecked")
   public static <T> TypeAdapter<T> get(DataType<T> type) {
-    return serializers.get(type);
+    return storedSerializers.get(type);
   }
 
   /**
    * Checks if there is an adapter for the given data type.
    */
   public static boolean hasSerializer(DataType<?> type) {
-    return serializers.containsKey(type);
+    return storedSerializers.containsKey(type);
   }
 
   /**
@@ -77,11 +77,11 @@ public final class Serializers {
   }
 
   public static void cleanUpAll() {
-    serializers.forEach((__, adapter) -> adapter.cleanUp());
+    storedSerializers.forEach((__, adapter) -> adapter.cleanUp());
   }
 
   public static Collection<TypeAdapter> getAdapters() {
-    return serializers.values();
+    return storedSerializers.values();
   }
 
 }

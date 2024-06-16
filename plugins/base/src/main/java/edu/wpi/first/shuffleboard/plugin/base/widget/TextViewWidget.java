@@ -64,8 +64,6 @@ public class TextViewWidget extends SimpleAnnotatedWidget<Object> {
       if (newNumber != null) {
         if (getData() instanceof Number || getData() instanceof String || getData() instanceof Boolean) {
           setData(newNumber);
-        } else if (getData() instanceof AnalogInputData) {
-          //Analog inputs can't accept data
         } else {
           throw new UnsupportedOperationException("Unsupported type: " + getData().getClass().getName());
         }

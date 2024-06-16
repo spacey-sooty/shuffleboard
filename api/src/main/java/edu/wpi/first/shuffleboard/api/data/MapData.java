@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class MapData extends ComplexData<MapData> {
 
-  private final ImmutableMap<String, Object> map;
+  private final Map<String, Object> map;
 
   public MapData(Map<String, Object> map) {
     this.map = ImmutableMap.copyOf(map);
   }
 
   @Override
-  public ImmutableMap<String, Object> asMap() {
+  public Map<String, Object> asMap() {
     return map;
   }
 
@@ -43,7 +43,7 @@ public class MapData extends ComplexData<MapData> {
    * @return a new MapData instance containing the change
    */
   public MapData put(String key, Object value) {
-    HashMap<String, Object> map = new HashMap<>(this.map);
+    Map<String, Object> map = new HashMap<>(this.map);
     map.put(key, value);
     return new MapData(map);
   }

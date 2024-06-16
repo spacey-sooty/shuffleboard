@@ -12,12 +12,6 @@ public class NumberField extends AbstractNumberField<Double> {
 
   private static final Pattern startOfFloatingPointNumber = Pattern.compile("^[-+]?\\d*\\.?\\d*$");
   private static final Pattern completeFloatingPointNumber = Pattern.compile("^[-+]?\\d*\\.?\\d+$");
-  private static final DecimalFormat textFromNumberFormat =
-          new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-  
-  static {
-    textFromNumberFormat.setMaximumFractionDigits(15);
-  }
 
   /**
    * Creates a new number field with no value.
@@ -42,6 +36,9 @@ public class NumberField extends AbstractNumberField<Double> {
 
   @Override
   protected String getTextFromNumber(Double num) {
+    DecimalFormat textFromNumberFormat =
+          new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+    textFromNumberFormat.setMaximumFractionDigits(15);
     return textFromNumberFormat.format(num);
   }
 

@@ -56,8 +56,8 @@ public final class UltrasonicWidget extends SimpleAnnotatedWidget<UltrasonicData
   }
 
   public enum Unit {
-    INCH(39.3701, "in"),
-    FOOT(3.28084, "ft"),
+    INCH(39.3_701, "in"),
+    FOOT(3.28_084, "ft"),
     METER(1, "m"),
     MM(1000, "mm"),
     CM(100, "cm");

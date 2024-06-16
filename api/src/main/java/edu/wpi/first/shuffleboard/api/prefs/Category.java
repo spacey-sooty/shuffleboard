@@ -1,7 +1,9 @@
 package edu.wpi.first.shuffleboard.api.prefs;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -84,5 +86,4 @@ public final class Category {
   public ImmutableList<Group> getGroups() {
     return groups;
   }
-
 }

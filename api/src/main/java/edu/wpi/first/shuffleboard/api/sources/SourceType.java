@@ -20,6 +20,7 @@ import javafx.collections.ObservableMap;
  * many types of data sources for a single source type. For example, a theoretical "file system" type may have one
  * implementation of {@link DataSource} for files, and another implementation for directories.
  */
+@SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
 public abstract class SourceType {
 
   private final String name;

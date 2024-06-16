@@ -31,12 +31,12 @@ public class ActionList {
 
   public static final class Action {
     private final String name;
-    private final Runnable action;
+    private final Runnable runnable;
     private final Node graphic;
 
-    private Action(String name, Runnable action, Node graphic) {
+    private Action(String name, Runnable runnable, Node graphic) {
       this.name = name;
-      this.action = action;
+      this.runnable = runnable;
       this.graphic = graphic;
     }
 
@@ -44,26 +44,26 @@ public class ActionList {
      * Creates an action.
      *
      * @param name   the name of the action
-     * @param action the code that the action should run
+     * @param runnable the code that the action should run
      *
      * @return a new action
      */
-    public static Action of(String name, Runnable action) {
-      return new Action(name, action, null);
+    public static Action of(String name, Runnable runnable) {
+      return new Action(name, runnable, null);
     }
 
     /**
      * Creates an action.
      *
      * @param name    the name of the action
-     * @param action  the code that the action should run
+     * @param runnable  the code that the action should run
      * @param graphic an optional graphic that should be displayed in the action's menu. If null, no graphic will be
      *                displayed
      *
      * @return a new action
      */
-    public static Action of(String name, Runnable action, Node graphic) {
-      return new Action(name, action, graphic);
+    public static Action of(String name, Runnable runnable, Node graphic) {
+      return new Action(name, runnable, graphic);
     }
 
     /**
@@ -76,8 +76,8 @@ public class ActionList {
     /**
      * Gets the code that this action runs.
      */
-    public Runnable getAction() {
-      return action;
+    public Runnable getRunnable() {
+      return runnable;
     }
 
     /**
@@ -91,7 +91,7 @@ public class ActionList {
      * Creates a new menu item for this action.
      */
     public MenuItem asMenuItem() {
-      MenuItem menuItem = FxUtils.menuItem(name, __ -> action.run());
+      MenuItem menuItem = FxUtils.menuItem(name, __ -> runnable.run());
       menuItem.setGraphic(graphic);
       return menuItem;
     }

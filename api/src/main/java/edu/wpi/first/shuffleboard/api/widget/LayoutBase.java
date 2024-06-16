@@ -7,6 +7,7 @@ import edu.wpi.first.shuffleboard.api.dnd.DataFormats;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -21,6 +22,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
@@ -258,7 +260,7 @@ public abstract class LayoutBase implements Layout {
         Component child = getChild();
         UUID parentId = Components.getDefault().uuidForComponent(this.layout);
         UUID childId = Components.getDefault().uuidForComponent(child);
-        ClipboardContent clipboardContent = new ClipboardContent();
+        Map<DataFormat, Object> clipboardContent = new ClipboardContent();
         clipboardContent.put(DataFormats.tilelessComponent, new DataFormats.TilelessComponentData(parentId, childId));
         Dragboard dragboard = this.startDragAndDrop(TransferMode.MOVE);
         dragboard.setContent(clipboardContent);

@@ -103,7 +103,7 @@ public abstract class AbstractWidget implements Widget {
   }
 
   @Override
-  public void addSource(DataSource source) throws IncompatibleSourceException {
+  public void addSource(DataSource source) {
     if (!getDataTypes().contains(source.getDataType())) {
       throw new IncompatibleSourceException(getDataTypes(), source.getDataType());
     }

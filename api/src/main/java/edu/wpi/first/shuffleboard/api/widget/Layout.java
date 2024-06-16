@@ -54,14 +54,15 @@ public interface Layout extends Component, ComponentContainer {
   }
 
   @Override
+  @SuppressWarnings("PMD.UseExplicitTypes")
   default Component addComponent(ComponentModel model) {
     var optionalComponent = Components.getDefault().createComponent(model.getDisplayType());
     if (model instanceof WidgetModel) {
       optionalComponent
-          .ifPresent(c -> {
+          .ifPresent((c -> {
             ((Widget) c).addSource(((WidgetModel) model).getDataSource());
             addComponent(c);
-          });
+          }));
     } else {
       optionalComponent.ifPresent(this::addComponent);
     }

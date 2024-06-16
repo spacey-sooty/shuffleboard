@@ -41,8 +41,8 @@ public final class LazyInit<T> implements Supplier<T> {
 
   private final Lock lock = new ReentrantLock();
 
-  private boolean initialized = false;
-  private T value = null;
+  private boolean initialized;
+  private T value;
   private final Callable<? extends T> initializer;
 
   /**
@@ -75,6 +75,7 @@ public final class LazyInit<T> implements Supplier<T> {
    * @throws RuntimeException if initialization failed
    */
   @Override
+  @SuppressWarnings("PMD.AvoidCatchingGenericException")
   public T get() {
     try {
       lock.lock();

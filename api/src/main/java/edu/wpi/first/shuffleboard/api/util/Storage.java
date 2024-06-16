@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +52,9 @@ public final class Storage {
   private static Path findOrCreate(String directory) throws IOException {
     Path path = Paths.get(directory);
     if (!Files.exists(path)) {
-      log.info("Creating directory " + path);
+      if (log.isLoggable(Level.INFO)) {
+        log.info("Creating directory " + path);
+      }
       Files.createDirectories(path);
     }
 

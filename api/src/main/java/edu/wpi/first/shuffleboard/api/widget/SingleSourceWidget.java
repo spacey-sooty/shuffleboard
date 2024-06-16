@@ -15,7 +15,7 @@ public abstract class SingleSourceWidget extends AbstractWidget {
   protected final ObjectProperty<DataSource> source = new SimpleObjectProperty<>(this, "source", DataSource.none());
 
   @Override
-  public final void addSource(DataSource source) throws IncompatibleSourceException {
+  public final void addSource(DataSource source) {
     if (getDataTypes().contains(source.getDataType())) {
       this.source.set(source);
       this.sources.remove(getSource());
@@ -34,7 +34,7 @@ public abstract class SingleSourceWidget extends AbstractWidget {
     return source.get();
   }
 
-  public final void setSource(DataSource source) throws IncompatibleSourceException {
+  public final void setSource(DataSource source) {
     addSource(source);
   }
 

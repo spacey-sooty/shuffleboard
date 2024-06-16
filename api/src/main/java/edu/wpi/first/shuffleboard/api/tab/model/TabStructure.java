@@ -14,7 +14,7 @@ public final class TabStructure {
   private final List<StructureChangeListener> structureChangeListeners = new ArrayList<>();
 
   private int selectedTabIndex = -1;
-  private String selectedTabTitle = null;
+  private String selectedTabTitle;
 
   /**
    * Gets the tab with the given title, creating it if it does not already exist.

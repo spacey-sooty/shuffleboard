@@ -222,8 +222,8 @@ public class BasePlugin extends Plugin {
   @Override
   public List<TabInfo> getDefaultTabInfo() {
     return ImmutableList.of(
-        TabInfo.builder().name("SmartDashboard").autoPopulate().sourcePrefix("SmartDashboard/").build(),
-        TabInfo.builder().name("LiveWindow").autoPopulate().sourcePrefix("LiveWindow/").build()
+        TabInfo.builder().setName("SmartDashboard").autoPopulate().setSourcePrefix("SmartDashboard/").build(),
+        TabInfo.builder().setName("LiveWindow").autoPopulate().setSourcePrefix("LiveWindow/").build()
     );
   }
 

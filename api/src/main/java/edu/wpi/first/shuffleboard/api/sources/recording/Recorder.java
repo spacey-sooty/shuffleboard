@@ -43,8 +43,8 @@ public final class Recorder {
   private final StringProperty fileNameFormat =
       new SimpleStringProperty(this, "fileNameFormat", DEFAULT_RECORDING_FILE_NAME_FORMAT);
   private String currentFileNameFormat = DEFAULT_RECORDING_FILE_NAME_FORMAT; // NOPMD - PMD can't handle lambdas
-  private Instant startTime = null;
-  private Recording recording = null;
+  private Instant startTime;
+  private Recording recording;
   private File recordingFile;
 
   private final Object startStopLock = new Object();
@@ -79,7 +79,7 @@ public final class Recorder {
                 if (isRunning()) {
                   try {
                     saveToDisk();
-                  } catch (Exception e) {
+                  } catch (IOException e) {
                     log.log(Level.WARNING, "Could not save recording", e);
                   }
                 }
@@ -110,7 +110,9 @@ public final class Recorder {
       }
       Serializers.getAdapters().forEach(Serializer::flush);
     }
-    log.fine("Saved recording to " + file);
+    if (log.isLoggable(Level.FINE)) {
+      log.fine("Saved recording to " + file);
+    }
   }
 
   /**

@@ -63,7 +63,7 @@ public abstract class ComplexData<T extends ComplexData<T>> {
    * desired.
    */
   public String toHumanReadableString() {
-    var map = asMap();
+    Map<String, Object> map = asMap();
     return map.entrySet()
         .stream()
         .sorted(Comparator.comparing(Map.Entry::getKey, AlphanumComparator.INSTANCE))

@@ -127,7 +127,7 @@ public final class PropertyUtils {
         } else if (c.wasRemoved()) {
           // Only remove the actual elements that were removed from the list
           // Otherwise all instances of an element would be removed, which is not the desired behavior
-          c.getRemoved().forEach(e -> combine.removeIf(t -> e == t));
+          c.getRemoved().forEach(e -> combine.removeIf(t -> e.equals(t)));
         }
       }
     };

@@ -23,6 +23,7 @@ public final class ReflectionUtils {
    *
    * @throws ReflectiveOperationException if the value of the field could not be retrieved
    */
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
   public static <T> T get(Object instance, Field field) throws ReflectiveOperationException {
     field.setAccessible(true);
     return (T) field.get(instance);
@@ -59,6 +60,7 @@ public final class ReflectionUtils {
    *
    * @throws ReflectiveOperationException if the method could not be called
    */
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
   public static <T> T invoke(Object instance, Method method, Object... args) throws ReflectiveOperationException {
     method.setAccessible(true);
     return (T) method.invoke(instance, args);

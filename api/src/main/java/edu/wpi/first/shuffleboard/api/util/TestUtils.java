@@ -3,8 +3,8 @@ package edu.wpi.first.shuffleboard.api.util;
 /**
  * Utility class for making sure certain methods may only be called from tests.
  */
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class TestUtils {
-
   private TestUtils() {
     throw new UnsupportedOperationException("TestUtils is a utility class!");
   }
@@ -14,7 +14,7 @@ public final class TestUtils {
    *
    * @throws IllegalStateException if this method is not called from within a test
    */
-  public static void assertRunningFromTest() throws IllegalStateException {
+  public static void assertRunningFromTest() {
     boolean found = false;
     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
       if (element.getClassName().contains("org.junit") || element.getClassName().contains("org.testfx")) {

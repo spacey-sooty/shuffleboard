@@ -1,5 +1,6 @@
 package edu.wpi.first.shuffleboard.api.theme;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
 import java.net.URL;
