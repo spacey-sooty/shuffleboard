@@ -36,7 +36,7 @@ public abstract class NetworkTableSource<T> extends AbstractDataSource<T> {
   private MultiSubscriber multiSub;
   private GenericSubscriber singleSub;
   private int listenerUid = -1;
-  private volatile boolean ntUpdate = false;
+  private volatile boolean ntUpdate;
 
   /**
    * Creates a network table source that listens to values under the given key. The key can be
@@ -82,7 +82,6 @@ public abstract class NetworkTableSource<T> extends AbstractDataSource<T> {
           if (isConnected()) {
             AsyncUtils.runAsync(() -> {
               try {
-                ntUpdate = true;
                 listener.onChange(fullTableKey, event);
               } finally {
                 ntUpdate = false;
@@ -103,7 +102,6 @@ public abstract class NetworkTableSource<T> extends AbstractDataSource<T> {
           if (isConnected()) {
             AsyncUtils.runAsync(() -> {
               try {
-                ntUpdate = true;
                 listener.onChange(name, event);
               } finally {
                 ntUpdate = false;

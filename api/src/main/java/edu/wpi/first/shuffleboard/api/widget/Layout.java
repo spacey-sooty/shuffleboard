@@ -59,10 +59,10 @@ public interface Layout extends Component, ComponentContainer {
     var optionalComponent = Components.getDefault().createComponent(model.getDisplayType());
     if (model instanceof WidgetModel) {
       optionalComponent
-          .ifPresent((c -> {
+          .ifPresent(c -> {
             ((Widget) c).addSource(((WidgetModel) model).getDataSource());
             addComponent(c);
-          }));
+          });
     } else {
       optionalComponent.ifPresent(this::addComponent);
     }

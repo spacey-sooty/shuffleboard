@@ -74,10 +74,6 @@ public final class NetworkTableSourceEntry implements SourceEntry {
     return key;
   }
 
-  public String simpleKey() {
-    return simpleKey;
-  }
-
   @Override
   public String getViewName() {
     return simpleKey;

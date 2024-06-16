@@ -27,7 +27,7 @@ public abstract class ComplexDataType<T extends ComplexData<?>> extends DataType
    * @throws IncompleteDataException if the map does not have all the variables needed to create a data object
    */
   public T fromMap(Map<String, Object> map) {
-      return fromMap().apply(map);
+    return fromMap().apply(map);
   }
 
   @Override
