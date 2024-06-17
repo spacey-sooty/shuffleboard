@@ -61,7 +61,7 @@ public class LayoutSaver implements ElementTypeAdapter<Layout> {
   }
 
   @Override
-  public Layout deserialize(JsonElement json, JsonDeserializationContext context) throws JsonParseException {
+  public Layout deserialize(JsonElement json, JsonDeserializationContext context) {
     JsonObject obj = json.getAsJsonObject();
     String name = obj.get("_type").getAsString();
 

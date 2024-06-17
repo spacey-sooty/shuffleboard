@@ -16,6 +16,7 @@ import javafx.scene.layout.Region;
 
 @Description(name = "POWER UP Field", dataTypes = FmsInfo.class)
 @ParametrizedController("PowerUpFieldWidget.fxml")
+@SuppressWarnings("PMD.UnusedPrivateMethod")
 public class PowerUpFieldWidget extends SimpleAnnotatedWidget<FmsInfo> {
 
   @FXML

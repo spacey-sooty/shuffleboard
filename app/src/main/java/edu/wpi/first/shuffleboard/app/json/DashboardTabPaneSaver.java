@@ -44,7 +44,7 @@ public class DashboardTabPaneSaver implements ElementTypeAdapter<DashboardTabPan
   }
 
   @Override
-  public DashboardTabPane deserialize(JsonElement json, JsonDeserializationContext context) throws JsonParseException {
+  public DashboardTabPane deserialize(JsonElement json, JsonDeserializationContext context) {
     JsonArray jsonTabs = json.getAsJsonArray();
     List<Tab> tabs = new ArrayList<>(jsonTabs.size());
 

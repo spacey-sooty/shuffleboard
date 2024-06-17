@@ -2,7 +2,6 @@ package edu.wpi.first.shuffleboard.app.json;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 
 import edu.wpi.first.shuffleboard.api.json.AnnotatedTypeAdapter;
@@ -20,7 +19,7 @@ public class ColorSaver implements ElementTypeAdapter<Color> {
   }
 
   @Override
-  public Color deserialize(JsonElement json, JsonDeserializationContext context) throws JsonParseException {
+  public Color deserialize(JsonElement json, JsonDeserializationContext context) {
     return Color.web(json.getAsString());
   }
 
